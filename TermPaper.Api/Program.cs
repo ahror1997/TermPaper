@@ -1,4 +1,5 @@
 using TermPaper.Api.Configuration;
+using TermPaper.Api.Services.AuthService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 services.AddControllers();
-
 services.AddAppDbContext(builder.Configuration);
+services.AddAppAuth();
+services.AddAppValidator();
+services.AddAppAutoMappers();
+
+services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
