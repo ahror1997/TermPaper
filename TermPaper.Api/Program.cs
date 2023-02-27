@@ -8,14 +8,18 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 services.AddControllers();
+services.AddRouting(options => options.LowercaseUrls = true);
 services.AddAppDbContext(builder.Configuration);
 services.AddAppAuth();
 services.AddAppValidator();
+services.AddAppSwagger();
 services.AddAppAutoMappers();
 
 services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
+
+app.UseAppSwagger();
 
 // Configure the HTTP request pipeline.
 
