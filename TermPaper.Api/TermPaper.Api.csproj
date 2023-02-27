@@ -8,13 +8,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TermPaper.Shared\TermPaper.Shared.csproj" />
-	  
-	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
+	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.14" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.3">
 		<PrivateAssets>all</PrivateAssets>
 		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	</PackageReference>
-	<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.6" />
+	<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
 	<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
   </ItemGroup>
 
