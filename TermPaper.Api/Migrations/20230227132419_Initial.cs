@@ -4,6 +4,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace TermPaper.Api.Migrations
 {
     /// <inheritdoc />
@@ -67,7 +69,7 @@ namespace TermPaper.Api.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
-                    PortfolioId = table.Column<int>(type: "integer", nullable: false),
+                    PortfolioId = table.Column<int>(type: "integer", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -92,8 +94,7 @@ namespace TermPaper.Api.Migrations
                         name: "FK_users_portfolios_PortfolioId",
                         column: x => x.PortfolioId,
                         principalTable: "portfolios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -113,6 +114,26 @@ namespace TermPaper.Api.Migrations
                         name: "FK_user_role_claims_user_roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "user_roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -206,26 +227,6 @@ namespace TermPaper.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "user_tokens",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LoginProvider = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_user_tokens", x => new { x.UserId, x.LoginProvider, x.Name });
-                    table.ForeignKey(
-                        name: "FK_user_tokens_users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "question_answers",
                 columns: table => new
                 {
@@ -251,6 +252,16 @@ namespace TermPaper.Api.Migrations
                         principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "user_roles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { new Guid("21478f12-1a29-4258-9653-deaea06f86a1"), null, "Author", "AUTHOR" },
+                    { new Guid("ca742e79-7381-4f32-8487-06d425b34fff"), null, "Admin", "ADMIN" },
+                    { new Guid("e6c168fb-0efa-47ec-ac76-93b9cc8abf1b"), null, "Client", "CLIENT" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -321,6 +332,9 @@ namespace TermPaper.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
                 name: "projects");
 
             migrationBuilder.DropTable(
@@ -337,9 +351,6 @@ namespace TermPaper.Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "user_role_owners");
-
-            migrationBuilder.DropTable(
-                name: "user_tokens");
 
             migrationBuilder.DropTable(
                 name: "orders");

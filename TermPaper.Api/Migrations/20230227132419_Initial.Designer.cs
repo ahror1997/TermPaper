@@ -12,7 +12,7 @@ using TermPaper.Api.Data;
 namespace TermPaper.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230227063624_Initial")]
+    [Migration("20230227132419_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -125,7 +125,7 @@ namespace TermPaper.Api.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("user_tokens", (string)null);
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("TermPaper.Shared.Entities.Order", b =>
@@ -257,6 +257,26 @@ namespace TermPaper.Api.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("user_roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ca742e79-7381-4f32-8487-06d425b34fff"),
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("21478f12-1a29-4258-9653-deaea06f86a1"),
+                            Name = "Author",
+                            NormalizedName = "AUTHOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("e6c168fb-0efa-47ec-ac76-93b9cc8abf1b"),
+                            Name = "Client",
+                            NormalizedName = "CLIENT"
+                        });
                 });
 
             modelBuilder.Entity("TermPaper.Shared.Entities.User", b =>
@@ -313,7 +333,7 @@ namespace TermPaper.Api.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("PortfolioId")
+                    b.Property<int?>("PortfolioId")
                         .HasColumnType("integer");
 
                     b.Property<string>("SecurityStamp")
@@ -440,9 +460,7 @@ namespace TermPaper.Api.Migrations
                 {
                     b.HasOne("TermPaper.Shared.Entities.Portfolio", "Portfolio")
                         .WithOne("User")
-                        .HasForeignKey("TermPaper.Shared.Entities.User", "PortfolioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TermPaper.Shared.Entities.User", "PortfolioId");
 
                     b.Navigation("Portfolio");
                 });
