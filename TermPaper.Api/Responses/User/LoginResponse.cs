@@ -1,8 +1,7 @@
 ﻿namespace TermPaper.Api.Responses.User
 {
-    public class LoginResponse
+    public class LoginResponse : BaseResponse
     {
-        public bool Success { get; set; } = false;
-        public string Message { get; set; } = string.Empty;
+        public string? Token { get; set; }
     }
 }

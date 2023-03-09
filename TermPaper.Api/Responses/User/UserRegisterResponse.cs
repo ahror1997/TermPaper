@@ -1,8 +1,7 @@
 ﻿namespace TermPaper.Api.Responses.User
 {
-    public class UserRegisterResponse
+    public class UserRegisterResponse : BaseResponse
     {
-        public bool Success { get; set; } = false;
-        public string Message { get; set; } = "Registrated successfully!";
+
     }
 }
