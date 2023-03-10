@@ -148,7 +148,9 @@ namespace TermPaper.Api.Migrations
                     Description = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    Deadline = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Deadline = table.Column<DateOnly>(type: "date", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -259,10 +261,20 @@ namespace TermPaper.Api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("21478f12-1a29-4258-9653-deaea06f86a1"), null, "Author", "AUTHOR" },
-                    { new Guid("ca742e79-7381-4f32-8487-06d425b34fff"), null, "Admin", "ADMIN" },
-                    { new Guid("e6c168fb-0efa-47ec-ac76-93b9cc8abf1b"), null, "Client", "CLIENT" }
+                    { new Guid("10c14783-a35d-4bdb-8abd-753b942c8d6a"), null, "Author", "AUTHOR" },
+                    { new Guid("17bd867b-cede-412d-a176-30793c4e84f5"), null, "Client", "CLIENT" },
+                    { new Guid("b80f317d-d9a9-4c35-afdd-31dc0ff6b9a0"), null, "Admin", "ADMIN" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "users",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PortfolioId", "SecurityStamp", "TwoFactorEnabled", "UpdatedAt", "UserName" },
+                values: new object[] { new Guid("173976ba-9fe3-4734-bb02-25860e6d9f37"), 0, "321bbb46-5bb8-42d3-af58-49bef82c2002", new DateTime(2023, 3, 10, 8, 22, 4, 854, DateTimeKind.Utc).AddTicks(6578), "admin@example.com", true, "John", "Doe", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEEUEemkL8nSsftHfNbEQTU6Z9PQUUtvmAIUlg/V6kn9LL+capAhaz/Q7Xb9AO9QRpg==", null, false, null, null, false, new DateTime(2023, 3, 10, 8, 22, 4, 854, DateTimeKind.Utc).AddTicks(6583), "admin" });
+
+            migrationBuilder.InsertData(
+                table: "user_role_owners",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { new Guid("b80f317d-d9a9-4c35-afdd-31dc0ff6b9a0"), new Guid("173976ba-9fe3-4734-bb02-25860e6d9f37") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_orders_UserId",

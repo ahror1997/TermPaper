@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using TermPaper.Api.Data;
 using TermPaper.Api.Requests;
 using TermPaper.Api.Responses.Orders;
@@ -11,11 +12,13 @@ namespace TermPaper.Api.Services.OrderService
     {
         private readonly UserManager<User> userManager;
         private readonly DataContext dataContext;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public OrderService(UserManager<User> userManager, DataContext dataContext)
+        public OrderService(UserManager<User> userManager, DataContext dataContext, IHttpContextAccessor httpContextAccessor)
         {
             this.userManager = userManager;
             this.dataContext = dataContext;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<OrderResponse> CreateOrder(CreateOrderRequest request)
@@ -25,8 +28,9 @@ namespace TermPaper.Api.Services.OrderService
                 Title = request.Title,
                 Description = request.Description,
                 Status = OrderStatus.New,
-                //User = userManager.GetUserAsync(),
-                Deadline = request.Deadline
+                User = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User),
+                Deadline = DateOnly.Parse(request.Deadline),
+                CreatedAt = DateTime.UtcNow,
             };
 
             dataContext.Orders.Add(order);
@@ -37,6 +41,21 @@ namespace TermPaper.Api.Services.OrderService
                 Success = true,
                 Data = order
             };
+        }
+
+        public async Task<OrderResponse> UpdateOrder(UpdateOrderRequest request, int orderId)
+        {
+            var order = await dataContext.Orders.SingleOrDefaultAsync(o => o.Id == orderId);
+            if (order is null)
+            {
+                return new OrderResponse() { Message = "Order not found!" };
+            }
+
+            order.Status = (OrderStatus)request.Status;
+            order.UpdatedAt = DateTime.UtcNow;
+            await dataContext.SaveChangesAsync();
+
+            return new OrderResponse() { Data = order, Message = "Order successfully updated!", Success = true };
         }
     }
 }

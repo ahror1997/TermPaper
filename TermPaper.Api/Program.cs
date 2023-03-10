@@ -1,5 +1,6 @@
 using TermPaper.Api.Configuration;
 using TermPaper.Api.Services.AuthService;
+using TermPaper.Api.Services.ChatService;
 using TermPaper.Api.Services.OrderService;
 using TermPaper.Api.Services.TokenService;
 
@@ -20,6 +21,7 @@ services.AddAppAutoMappers();
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped<ITokenService, TokenService>();
 services.AddScoped<IOrderService, OrderService>();
+services.AddScoped<IChatService, ChatService>();
 
 var app = builder.Build();
 
@@ -29,6 +31,7 @@ app.UseAppSwagger();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -104,6 +104,13 @@ namespace TermPaper.Api.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("user_role_owners", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("173976ba-9fe3-4734-bb02-25860e6d9f37"),
+                            RoleId = new Guid("b80f317d-d9a9-4c35-afdd-31dc0ff6b9a0")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -133,8 +140,11 @@ namespace TermPaper.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Deadline")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateOnly>("Deadline")
+                        .HasColumnType("date");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -146,6 +156,9 @@ namespace TermPaper.Api.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -258,19 +271,19 @@ namespace TermPaper.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ca742e79-7381-4f32-8487-06d425b34fff"),
+                            Id = new Guid("b80f317d-d9a9-4c35-afdd-31dc0ff6b9a0"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("21478f12-1a29-4258-9653-deaea06f86a1"),
+                            Id = new Guid("10c14783-a35d-4bdb-8abd-753b942c8d6a"),
                             Name = "Author",
                             NormalizedName = "AUTHOR"
                         },
                         new
                         {
-                            Id = new Guid("e6c168fb-0efa-47ec-ac76-93b9cc8abf1b"),
+                            Id = new Guid("17bd867b-cede-412d-a176-30793c4e84f5"),
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         });
@@ -359,6 +372,27 @@ namespace TermPaper.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("173976ba-9fe3-4734-bb02-25860e6d9f37"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "321bbb46-5bb8-42d3-af58-49bef82c2002",
+                            CreatedAt = new DateTime(2023, 3, 10, 8, 22, 4, 854, DateTimeKind.Utc).AddTicks(6578),
+                            Email = "admin@example.com",
+                            EmailConfirmed = true,
+                            FirstName = "John",
+                            LastName = "Doe",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEUEemkL8nSsftHfNbEQTU6Z9PQUUtvmAIUlg/V6kn9LL+capAhaz/Q7Xb9AO9QRpg==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UpdatedAt = new DateTime(2023, 3, 10, 8, 22, 4, 854, DateTimeKind.Utc).AddTicks(6583),
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

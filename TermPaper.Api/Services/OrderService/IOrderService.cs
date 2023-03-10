@@ -6,5 +6,6 @@ namespace TermPaper.Api.Services.OrderService
     public interface IOrderService
     {
         Task<OrderResponse> CreateOrder(CreateOrderRequest request);
+        Task<OrderResponse> UpdateOrder(UpdateOrderRequest request, int orderId);
     }
 }

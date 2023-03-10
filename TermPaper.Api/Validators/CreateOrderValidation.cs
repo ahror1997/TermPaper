@@ -11,7 +11,12 @@ namespace TermPaper.Api.Validators
 
             RuleFor(o => o.Description).NotEmpty().NotNull();
 
-            RuleFor(o => o.Deadline).NotEmpty().NotNull();
+            RuleFor(o => o.Deadline).Must(BeAValidDate).WithMessage("Deadline date is wrong!");
+        }
+
+        private bool BeAValidDate(string date)
+        {
+            return DateOnly.TryParse(date, out DateOnly result);
         }
     }
 }

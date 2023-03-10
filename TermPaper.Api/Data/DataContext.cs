@@ -30,7 +30,7 @@ namespace TermPaper.Api.Data
             builder.Entity<Project>().ToTable("projects");
             builder.Entity<QuestionAnswer>().ToTable("question_answers");
 
-            RolesSeeder.Seed(builder);
+            DataSeeder.Seed(builder);
         }
     }
 }
